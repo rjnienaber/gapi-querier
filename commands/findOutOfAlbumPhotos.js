@@ -2,11 +2,14 @@ import apiGooglePhotos from '../helpers/google-photos.js';
 
 const _mediaItems = {};
 const _mediaItemsInAlbums = new Set();
+const _dates = {};
 
 function storeMediaItems(mediaItems) {
 	if (!mediaItems) return;
 
 	for (const mi of mediaItems) {
+		const date = mi.mediaMetadata.creationTime.substring(0, 10);
+		_dates[date] = _dates[date] ? _dates[date] + 1 : 1;
 		_mediaItems[mi.id] = mi.productUrl;
 	}
 }
@@ -16,6 +19,13 @@ function rememberMediaItemsInAlbums(mediaItems) {
 
 	for (const mi of mediaItems) {
 		_mediaItemsInAlbums.add(mi.id);
+		const date = mi.mediaMetadata.creationTime.substring(0, 10);
+		if (_dates[date]) {
+			_dates[date] -= 1;
+			if (_dates[date] === 0) {
+				delete _dates[date];
+			}
+		}
 	}
 }
 
@@ -74,19 +84,22 @@ async function runAsync(checkSharedAlbums) {
 		}
 	}
 
-	if (Object.keys(_mediaItems).length) {
+	if (Object.keys(_dates).length) {
 		const frag = document.createDocumentFragment(),
 			  table = document.createElement('table'),
-			  tableId = 'tableFindOutOfAlbumPhotos';
+			  tableId = 'tableFindOutOfAlbumPhotosDates';
 
-		for (const id in _mediaItems) {
-			const url = _mediaItems[id],
+		for (const date in _dates) {
+			const count = _dates[date],
 				  tr = document.createElement('tr');
-
-			tr.innerHTML = `<td><a href='${url}' target='_blank'>${url}</a><td>`;
+			tr.innerHTML = `<td>${date} - ${count}<td>`;
 
 			table.appendChild(tr);
 		}
+
+		const tr = document.createElement('tr');
+		tr.innerHTML = `<td>Total - ${Object.keys(_dates).length}<td>`;
+		table.appendChild(tr);
 
 		frag.appendChild(createSaveLink(tableId));
 

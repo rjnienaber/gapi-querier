@@ -1,0 +1,22 @@
+{
+  "name": "gapi-querier",
+  "version": "1.0.0",
+  "description": "GAPI-Querier (aka find out-of-album photos) == I needed to get a list of all my photos (in Google Photos) that were NOT in an album, unfortunately Google didn't provide that feature. So I created this tool to get that listing via their API.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonagh/gapi-querier.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonagh/gapi-querier/issues"
+  },
+  "homepage": "https://github.com/jonagh/gapi-querier#readme",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}
