@@ -89,17 +89,19 @@ async function runAsync(checkSharedAlbums) {
 			  table = document.createElement('table'),
 			  tableId = 'tableFindOutOfAlbumPhotosDates';
 
+		const tr = document.createElement('tr');
+		tr.innerHTML = `<td><strong>Total - ${Object.keys(_dates).length}<strong><td>`;
+		table.appendChild(tr);
+
+
 		for (const date in _dates) {
 			const count = _dates[date],
 				  tr = document.createElement('tr');
-			tr.innerHTML = `<td>${date} - ${count}<td>`;
+			tr.innerHTML = `<td><a href="https://photos.google.com/search/${date}">${date}</a> - ${count}<td>`;
 
 			table.appendChild(tr);
 		}
 
-		const tr = document.createElement('tr');
-		tr.innerHTML = `<td>Total - ${Object.keys(_dates).length}<td>`;
-		table.appendChild(tr);
 
 		frag.appendChild(createSaveLink(tableId));
 
